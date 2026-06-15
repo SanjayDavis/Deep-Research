@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "../../lib/utils";
 import { ChevronDown, Search } from "lucide-react";
 
@@ -30,6 +31,7 @@ export function SearchableSelect({
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [highlightIdx, setHighlightIdx] = useState(0);
 
   const filtered = useMemo(() => {
@@ -83,6 +85,70 @@ export function SearchableSelect({
     }
   };
 
+  const dropdown = open ? (
+    <div
+      ref={dropdownRef}
+      className="fixed z-[9999] mt-1 rounded-lg border border-border bg-popover shadow-lg overflow-hidden"
+      style={{
+        top: containerRef.current ? containerRef.current.getBoundingClientRect().bottom + 4 : 0,
+        left: containerRef.current ? containerRef.current.getBoundingClientRect().left : 0,
+        width: containerRef.current ? containerRef.current.getBoundingClientRect().width : 0,
+      }}
+    >
+      <div className="p-1.5 border-b border-border/50">
+        <input
+          ref={inputRef}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Type to filter..."
+          className="w-full h-8 rounded-md bg-background px-2.5 text-xs outline-none placeholder:text-muted-foreground/50 border border-input/50 focus:border-primary/50"
+        />
+      </div>
+
+      <div
+        ref={listRef}
+        className="max-h-60 overflow-y-auto"
+        onKeyDown={handleKeyDown}
+      >
+        {filtered.length === 0 ? (
+          <div className="px-3 py-6 text-center text-xs text-muted-foreground">
+            {emptyMessage}
+          </div>
+        ) : (
+          filtered.map((opt, idx) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => {
+                onChange(opt.value);
+                setOpen(false);
+                setSearch("");
+              }}
+              onMouseEnter={() => setHighlightIdx(idx)}
+              className={cn(
+                "flex items-center gap-2 w-full px-3 py-2 text-xs text-left transition-colors",
+                idx === highlightIdx && "bg-accent text-accent-foreground",
+                opt.value === value && "text-primary font-medium",
+                opt.value !== value && "text-popover-foreground"
+              )}
+            >
+              <span className="flex-1 truncate">{opt.label}</span>
+              {opt.value === value && (
+                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+              )}
+            </button>
+          ))
+        )}
+      </div>
+
+      <div className="px-3 py-1.5 border-t border-border/50 text-[11px] text-muted-foreground flex items-center justify-between">
+        <span>{filtered.length} / {options.length}</span>
+        <span className="text-[10px]">↑↓ navigate ↵ select</span>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <div ref={containerRef} className={cn("relative", className)}>
       <button
@@ -104,68 +170,7 @@ export function SearchableSelect({
         <ChevronDown className={cn("w-3.5 h-3.5 text-muted-foreground transition-transform", open && "rotate-180")} />
       </button>
 
-      {open && (
-        <div
-          className="fixed z-50 mt-1 rounded-lg border border-border bg-popover shadow-lg overflow-hidden"
-          style={{
-            top: containerRef.current ? containerRef.current.getBoundingClientRect().bottom + 4 : 0,
-            left: containerRef.current ? containerRef.current.getBoundingClientRect().left : 0,
-            width: containerRef.current ? containerRef.current.getBoundingClientRect().width : 0,
-          }}
-        >
-          <div className="p-1.5 border-b border-border/50">
-            <input
-              ref={inputRef}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Type to filter..."
-              className="w-full h-8 rounded-md bg-background px-2.5 text-xs outline-none placeholder:text-muted-foreground/50 border border-input/50 focus:border-primary/50"
-            />
-          </div>
-
-          <div
-            ref={listRef}
-            className="max-h-60 overflow-y-auto"
-            onKeyDown={handleKeyDown}
-          >
-            {filtered.length === 0 ? (
-              <div className="px-3 py-6 text-center text-xs text-muted-foreground">
-                {emptyMessage}
-              </div>
-            ) : (
-              filtered.map((opt, idx) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => {
-                    onChange(opt.value);
-                    setOpen(false);
-                    setSearch("");
-                  }}
-                  onMouseEnter={() => setHighlightIdx(idx)}
-                  className={cn(
-                    "flex items-center gap-2 w-full px-3 py-2 text-xs text-left transition-colors",
-                    idx === highlightIdx && "bg-accent text-accent-foreground",
-                    opt.value === value && "text-primary font-medium",
-                    opt.value !== value && "text-popover-foreground"
-                  )}
-                >
-                  <span className="flex-1 truncate">{opt.label}</span>
-                  {opt.value === value && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                  )}
-                </button>
-              ))
-            )}
-          </div>
-
-          <div className="px-3 py-1.5 border-t border-border/50 text-[11px] text-muted-foreground flex items-center justify-between">
-            <span>{filtered.length} / {options.length}</span>
-            <span className="text-[10px]">↑↓ navigate ↵ select</span>
-          </div>
-        </div>
-      )}
+      {createPortal(dropdown, document.body)}
     </div>
   );
 }
