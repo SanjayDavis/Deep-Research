@@ -1,0 +1,190 @@
+@import "highlight.js/styles/github-dark.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 93%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 93%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 93%;
+    --primary: 210 100% 62%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 93%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 0 0% 18%;
+    --accent-foreground: 0 0% 93%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 210 100% 62%;
+    --radius: 0.5rem;
+
+    --sidebar: 0 0% 5%;
+    --sidebar-foreground: 0 0% 93%;
+    --sidebar-muted: 0 0% 45%;
+    --sidebar-border: 0 0% 14%;
+
+    --stage-pending: 0 0% 25%;
+    --stage-active: 210 100% 62%;
+    --stage-done: 142 72% 45%;
+    --stage-error: 0 84% 60%;
+
+    --surface-elevated: 0 0% 11%;
+    --surface-overlay: 0 0% 13%;
+  }
+
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 210 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 210 100% 50%;
+
+    --sidebar: 0 0% 96%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-muted: 0 0% 45%;
+    --sidebar-border: 0 0% 88%;
+
+    --stage-pending: 0 0% 75%;
+    --stage-active: 210 100% 50%;
+    --stage-done: 142 72% 40%;
+    --stage-error: 0 84% 50%;
+
+    --surface-elevated: 0 0% 100%;
+    --surface-overlay: 0 0% 95%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/40;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-lg border border-border bg-card;
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between px-4 py-2.5 border-b border-border;
+  }
+
+  .section-title {
+    @apply text-xs font-semibold text-foreground;
+  }
+
+  .section-subtitle {
+    @apply text-[11px] text-muted-foreground;
+  }
+
+  .input-field {
+    @apply h-9 w-full rounded-md border border-input bg-background px-3 text-sm
+           placeholder:text-muted-foreground/50
+           focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring
+           transition-all duration-150;
+  }
+
+  .input-field:hover:not(:disabled) {
+    @apply border-ring/40;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-md px-4 py-1.5 
+           bg-primary text-primary-foreground font-medium text-sm
+           hover:bg-primary/90 active:bg-primary/80
+           transition-all duration-150;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-md px-3 py-1.5 
+           bg-transparent text-foreground font-medium text-sm
+           hover:bg-accent transition-all duration-150;
+  }
+
+  .card-modern {
+    @apply rounded-lg border border-border bg-card 
+           hover:bg-accent hover:border-border 
+           transition-all duration-150 cursor-pointer;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 px-1.5 py-0.5 rounded 
+           text-[10px] font-medium bg-primary/10 text-primary;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.light .prose-invert {
+  --tw-prose-body: hsl(var(--foreground));
+  --tw-prose-headings: hsl(var(--foreground));
+  --tw-prose-links: hsl(var(--primary));
+}
+
+.light pre code.hljs {
+  background: hsl(var(--muted)) !important;
+}
