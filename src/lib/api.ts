@@ -47,6 +47,9 @@ export async function openReportsFolder(): Promise<void> {
 
 export function validateSettings(settings: AppSettings): { valid: boolean; message?: string } {
   const provider = settings.providers[settings.provider];
+  if (!provider?.baseUrl?.trim()) {
+    return { valid: false, message: "API Endpoint URL is required in Settings." };
+  }
   if (!provider?.model?.trim()) {
     return { valid: false, message: "Select a model in Settings before starting research." };
   }

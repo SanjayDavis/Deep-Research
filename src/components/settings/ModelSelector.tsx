@@ -14,8 +14,13 @@ interface ModelSelectorProps {
 
 const PROVIDER_HINTS: Record<ProviderType, string> = {
   openrouter: "Enter your OpenRouter API key, then click Connect",
+  openai: "Enter your OpenAI API key, then click Connect",
+  deepseek: "Enter your DeepSeek API key, then click Connect",
+  mistral: "Enter your Mistral API key, then click Connect",
+  gemini: "Enter your Google AI API key, then click Connect",
   "lm-studio": "Make sure LM Studio is running, then click Connect",
   "opencode-proxy": "Make sure the proxy is running, then click Connect",
+  custom: "Enter the API endpoint URL, then click Connect",
 };
 
 function cleanModelName(name: string): string {

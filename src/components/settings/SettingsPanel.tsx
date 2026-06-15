@@ -12,13 +12,18 @@ import { useState } from "react";
 
 const PROVIDER_OPTIONS = [
   { value: "openrouter", label: "OpenRouter" },
+  { value: "openai", label: "OpenAI (ChatGPT)" },
+  { value: "deepseek", label: "DeepSeek" },
+  { value: "mistral", label: "Mistral" },
+  { value: "gemini", label: "Google Gemini" },
   { value: "lm-studio", label: "LM Studio (Local)" },
   { value: "opencode-proxy", label: "OpenCode Proxy" },
+  { value: "custom", label: "Custom" },
 ];
 
 export function SettingsPanel() {
   const {
-    settings, load, loaded, setProvider, setApiKey, setModel, setModels,
+    settings, load, loaded, setProvider, setBaseUrl, setApiKey, setModel, setModels,
     setSearxngUrl, setResearchDepth, setMaxPages, setNumRounds, setTimeLimit, save,
   } = useSettings();
   const [saved, setSaved] = useState(false);
@@ -71,6 +76,7 @@ export function SettingsPanel() {
             <ProviderConfig
               type={settings.provider}
               config={activeConfig}
+              onBaseUrlChange={(url) => setBaseUrl(settings.provider, url)}
               onApiKeyChange={(key) => setApiKey(settings.provider, key)}
               onModelChange={(model) => setModel(settings.provider, model)}
               onModelsChange={(models) => setModels(settings.provider, models)}

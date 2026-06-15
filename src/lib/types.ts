@@ -1,4 +1,4 @@
-export type ProviderType = "openrouter" | "lm-studio" | "opencode-proxy";
+export type ProviderType = "openrouter" | "openai" | "deepseek" | "mistral" | "gemini" | "lm-studio" | "opencode-proxy" | "custom";
 
 export interface ProviderConfig {
   type: ProviderType;

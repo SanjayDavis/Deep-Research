@@ -7,6 +7,7 @@ interface SettingsStore {
   loaded: boolean;
   load: () => Promise<void>;
   setProvider: (type: ProviderType) => void;
+  setBaseUrl: (type: ProviderType, url: string) => void;
   setModel: (type: ProviderType, model: string) => void;
   setModels: (type: ProviderType, models: string[]) => void;
   setApiKey: (type: ProviderType, key: string) => void;
@@ -36,6 +37,21 @@ export const useSettings = create<SettingsStore>((set, get) => ({
     set((s) => {
       if (!s.settings) return s;
       return { settings: { ...s.settings, provider: type } };
+    });
+  },
+
+  setBaseUrl: (type, url) => {
+    set((s) => {
+      if (!s.settings) return s;
+      return {
+        settings: {
+          ...s.settings,
+          providers: {
+            ...s.settings.providers,
+            [type]: { ...s.settings.providers[type], baseUrl: url },
+          },
+        },
+      };
     });
   },
 

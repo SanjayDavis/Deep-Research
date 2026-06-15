@@ -52,6 +52,38 @@ impl Default for AppSettings {
             model: "google/gemini-2.0-flash-001".into(),
             models: vec![],
         });
+        providers.insert("openai".into(), ProviderConfig {
+            r#type: "openai".into(),
+            label: "OpenAI".into(),
+            base_url: "https://api.openai.com/v1".into(),
+            api_key: String::new(),
+            model: "gpt-4o".into(),
+            models: vec![],
+        });
+        providers.insert("deepseek".into(), ProviderConfig {
+            r#type: "deepseek".into(),
+            label: "DeepSeek".into(),
+            base_url: "https://api.deepseek.com/v1".into(),
+            api_key: String::new(),
+            model: "deepseek-chat".into(),
+            models: vec![],
+        });
+        providers.insert("mistral".into(), ProviderConfig {
+            r#type: "mistral".into(),
+            label: "Mistral".into(),
+            base_url: "https://api.mistral.ai/v1".into(),
+            api_key: String::new(),
+            model: "mistral-large-latest".into(),
+            models: vec![],
+        });
+        providers.insert("gemini".into(), ProviderConfig {
+            r#type: "gemini".into(),
+            label: "Google Gemini".into(),
+            base_url: "https://generativelanguage.googleapis.com/v1beta/openai/".into(),
+            api_key: String::new(),
+            model: "gemini-2.0-flash".into(),
+            models: vec![],
+        });
         providers.insert("lm-studio".into(), ProviderConfig {
             r#type: "lm-studio".into(),
             label: "LM Studio".into(),
@@ -64,6 +96,14 @@ impl Default for AppSettings {
             r#type: "opencode-proxy".into(),
             label: "OpenCode Proxy".into(),
             base_url: "http://127.0.0.1:4010/v1".into(),
+            api_key: String::new(),
+            model: String::new(),
+            models: vec![],
+        });
+        providers.insert("custom".into(), ProviderConfig {
+            r#type: "custom".into(),
+            label: "Custom".into(),
+            base_url: String::new(),
             api_key: String::new(),
             model: String::new(),
             models: vec![],
